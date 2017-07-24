@@ -1,0 +1,6 @@
+version: '2'
+services:
+  postgis-debezium:
+    build: .
+    ports:
+      - "5432:5432"
