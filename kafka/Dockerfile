@@ -1,15 +1,14 @@
 FROM openjdk:8-jre
 
-ARG kafka_version=0.11.0.0
+ARG kafka_version=0.10.2.0
 ARG scala_version=2.12
 
-MAINTAINER wurstmeister
 
 ENV KAFKA_VERSION=$kafka_version \
   SCALA_VERSION=$scala_version \
   KAFKA_HOME=/opt/kafka \
   KAFKA_MIRROR=http://mirror.netcologne.de/apache.org \
-  MD5HASH=a408f2eea282bcfa8a25ba20eb1ad49b
+  MD5HASH=8e26b57c67b90f177e8ea77fd03970ea
 
 # # Download Kafka #
 RUN wget ${KAFKA_MIRROR}/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -O /tmp/kafka.tgz && \

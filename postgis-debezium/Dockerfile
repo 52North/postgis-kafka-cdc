@@ -36,3 +36,7 @@ COPY postgresql.conf.sample /usr/share/postgresql/postgresql.conf.sample
 
 # Copy the script which will initialize the replication permissions
 COPY /docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
+
+ENV POSTGRES_DB=postgres
+
+ADD dump.sql.gz /docker-entrypoint-initdb.d/zzz-dump.sql.gz

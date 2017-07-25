@@ -2,5 +2,7 @@ version: '2'
 services:
   postgis-debezium:
     build: .
+    image: 52north/postgis-debezium:1.0.0
+    container_name: postgis-debezium
     ports:
       - "5432:5432"
