@@ -22,3 +22,21 @@ to [http://localhost:8083/connectors/](http://localhost:8083/connectors):
   }
 }
 ```
+
+## Known Limitations
+
+Work in progress, so do not expect production stability.
+
+### Kafka Version
+
+The currently used debezium Kafka connect plugin is compiled against the
+0.10.2.0 API of Kafka. It seems to work with Kafka 0.11.0.0 as well, but
+we cannot guarantee stable behavior. Once debezium is available for version
+0.11.0.0, we will update the Docker images.
+
+### Unexpected Behavior
+
+It may happen that changes are only available after a delay (1-2 minutes?).
+This may be related to topic creation, as it does not seem to happen if
+a consumer _first_ (i.e. before POSTing the above connector config)
+subscribes to the topic that is later used by debezium to publish changes.
