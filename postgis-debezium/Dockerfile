@@ -1,4 +1,4 @@
-FROM mdillon/postgis:9.6
+FROM mdillon/postgis:9.5
 
 MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
@@ -9,7 +9,7 @@ RUN apt-get update \
         build-essential \
         pkg-config \
         git \
-        postgresql-server-dev-9.6 \
+        postgresql-server-dev-9.5 \
         libproj-dev \
     && apt-get clean && apt-get update && apt-get install -f -y --no-install-recommends \
         liblwgeom-dev \
@@ -26,7 +26,7 @@ RUN apt-get update \
             build-essential \
             pkg-config \
             git \
-            postgresql-server-dev-9.6 \
+            postgresql-server-dev-9.5 \
             libproj-dev \
             liblwgeom-dev && \
     apt-get autoremove -y && apt-get clean

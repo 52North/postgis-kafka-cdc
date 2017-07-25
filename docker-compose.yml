@@ -15,7 +15,7 @@ services:
     links:
       - "zookeeper"
   postgis-debezium:
-    image: 52north/postgis-debezium:1.0.0
+    image: 52north/postgis-debezium:9.5
     ports:
       - "5432:5432"
     expose:
