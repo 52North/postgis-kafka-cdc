@@ -1,5 +1,10 @@
 # Kafka / Postgis Change Data Capture examples
 
+Change Data Capture (CDC) with [Debezium](http://debezium.io/), [Postgis](http://postgis.net/)
+and [Kafka](https://kafka.apache.org/).
+
+## Deployment
+
 Currently, images are not yet pushed to docker hub. Please compile locally (it's easy,
 [docker-compose](https://docs.docker.com/compose/install/) required):
 
