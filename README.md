@@ -1,5 +1,20 @@
 # Kafka / Postgis Change Data Capture examples
 
+Currently, images are not yet pushed to docker hub. Please compile locally (it's easy,
+[docker-compose](https://docs.docker.com/compose/install/) required):
+
+```
+cd kafka
+docker-compose build
+cd ../kafka-connect-base
+docker-compose build
+cd ../kafka-connect
+docker-compose build
+cd ../postgis-debezium
+docker-compose build
+cd ..
+```
+
 Run with `docker-compose rm -f && docker-compose up --build`.
 
 Wait for the container to boot up. To initialize the connector,
@@ -41,7 +56,7 @@ This may be related to topic creation, as it does not seem to happen if
 a consumer _first_ (i.e. before POSTing the above connector config)
 subscribes to the topic that is later used by debezium to publish changes.
 
-# Acknowledgement
+## Acknowledgement
 
 This Docker images have been derived from
 [debezium/docker-images](https://github.com/debezium/docker-images).
