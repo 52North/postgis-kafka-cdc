@@ -1,6 +1,8 @@
-FROM fabric8/java-jboss-openjdk8-jdk
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER Debezium Community
+
+RUN uname -a
 
 #
 # Set the version, home directory, and MD5 hash.
@@ -9,14 +11,14 @@ MAINTAINER Debezium Community
 ENV KAFKA_VERSION=0.10.2.0 \
     SCALA_VERSION=2.11 \
     KAFKA_HOME=/kafka \
-    MD5HASH=051E5E16050C85EBDC40F3BBBC188317
+    MD5HASH=051e5e16050c85ebdc40f3bbbc188317
 
 #
 # Create a user and home directory for Kafka
 #
 USER root
-RUN yum -y install iproute && yum clean all
-RUN groupadd -r kafka -g 1001 && useradd -u 1001 -r -g kafka -m -d $KAFKA_HOME -s /sbin/nologin -c "Kafka user" kafka && \
+#RUN apt-get -y install iproute && apt-get clean
+RUN addgroup -S kafka -g 1001 && adduser -u 1001 -S -g kafka -h $KAFKA_HOME -s /sbin/nologin -g "Kafka user" kafka && \
     chmod 755 $KAFKA_HOME
 RUN mkdir $KAFKA_HOME/data && \
     mkdir $KAFKA_HOME/logs
@@ -30,6 +32,8 @@ RUN chown -R kafka $KAFKA_HOME && \
 #
 # Download Kafka
 #
+RUN apk add --update curl bash && \
+  rm -rf /var/cache/apk/*
 RUN curl -fSL -o /tmp/kafka.tgz $(curl --stderr /dev/null https://www.apache.org/dyn/closer.cgi\?as_json\=1 | sed -rn 's/.*"preferred":.*"(.*)"/\1/p')kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz
 
 #

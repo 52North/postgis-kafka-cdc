@@ -18,6 +18,8 @@ services:
     image: 52north/postgis-debezium:1.0.0
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
   connect:
     image: 52north/kafka-connect:0.10.2.0
     restart: unless-stopped
