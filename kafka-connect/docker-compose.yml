@@ -1,6 +1,6 @@
 version: '2'
 #for building purposes only
 services:
-  kafka:
+  kafka-connect:
     build: .
-    image: 52north/kafka:0.10.2.0
+    image: 52north/kafka-connect:0.10.2.0

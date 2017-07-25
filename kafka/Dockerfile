@@ -1,31 +1,62 @@
-FROM openjdk:8-jre
+FROM fabric8/java-jboss-openjdk8-jdk
 
-ARG kafka_version=0.10.2.0
-ARG scala_version=2.12
+MAINTAINER Debezium Community
 
+#
+# Set the version, home directory, and MD5 hash.
+# MD5 hash taken from http://kafka.apache.org/downloads.html for this version of Kafka
+#
+ENV KAFKA_VERSION=0.10.2.0 \
+    SCALA_VERSION=2.11 \
+    KAFKA_HOME=/kafka \
+    MD5HASH=051E5E16050C85EBDC40F3BBBC188317
 
-ENV KAFKA_VERSION=$kafka_version \
-  SCALA_VERSION=$scala_version \
-  KAFKA_HOME=/opt/kafka \
-  KAFKA_MIRROR=http://mirror.netcologne.de/apache.org \
-  MD5HASH=8e26b57c67b90f177e8ea77fd03970ea
+#
+# Create a user and home directory for Kafka
+#
+USER root
+RUN yum -y install iproute && yum clean all
+RUN groupadd -r kafka -g 1001 && useradd -u 1001 -r -g kafka -m -d $KAFKA_HOME -s /sbin/nologin -c "Kafka user" kafka && \
+    chmod 755 $KAFKA_HOME
+RUN mkdir $KAFKA_HOME/data && \
+    mkdir $KAFKA_HOME/logs
 
-# # Download Kafka #
-RUN wget ${KAFKA_MIRROR}/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -O /tmp/kafka.tgz && \
-    mkdir -p $KAFKA_HOME && echo "$MD5HASH  /tmp/kafka.tgz" | md5sum -c - && \
-    tar -xzf /tmp/kafka.tgz -C $KAFKA_HOME --strip-components 1 && \
-    rm -f /tmp/kafka.tgz && \
-    apt-get update && apt-get install -y net-tools && apt-get clean
+#
+# Change ownership and switch user
+#
+RUN chown -R kafka $KAFKA_HOME && \
+    chgrp -R kafka $KAFKA_HOME
 
-VOLUME ["/kafka"]
+#
+# Download Kafka
+#
+RUN curl -fSL -o /tmp/kafka.tgz $(curl --stderr /dev/null https://www.apache.org/dyn/closer.cgi\?as_json\=1 | sed -rn 's/.*"preferred":.*"(.*)"/\1/p')kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz
 
-ENV PATH ${PATH}:${KAFKA_HOME}/bin
-ADD scripts/start-kafka.sh /usr/bin/start-kafka.sh
-ADD scripts/broker-list.sh /usr/bin/broker-list.sh
-ADD scripts/create-topics.sh /usr/bin/create-topics.sh
-# The scripts need to have executable permission
-RUN chmod a+x /usr/bin/start-kafka.sh && \
-    chmod a+x /usr/bin/broker-list.sh && \
-    chmod a+x /usr/bin/create-topics.sh
-# Use "exec" form so that it runs as PID 1 (useful for graceful shutdown)
-CMD ["start-kafka.sh"]
+#
+# Verify the contents and then install ...
+#
+RUN echo "$MD5HASH  /tmp/kafka.tgz" | md5sum -c - &&\
+    tar -xzf /tmp/kafka.tgz -C $KAFKA_HOME --strip-components 1 &&\
+    rm -f /tmp/kafka.tgz
+
+COPY ./log4j.properties $KAFKA_HOME/config/log4j.properties
+
+#
+# Allow random UID to use Kafka
+#
+RUN chmod -R g+w,o+w $KAFKA_HOME
+
+USER kafka
+
+# Set the working directory to the Kafka home directory
+WORKDIR $KAFKA_HOME
+
+#
+# Expose the ports and set up volumes for the data and logs directories
+#
+EXPOSE 9092
+VOLUME ["/kafka/data","/kafka/logs","/kafka/config"]
+
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]
