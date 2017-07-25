@@ -2,16 +2,14 @@ FROM openjdk:8-jdk-alpine
 
 MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
-RUN uname -a
-
 #
 # Set the version, home directory, and MD5 hash.
 # MD5 hash taken from http://kafka.apache.org/downloads.html for this version of Kafka
 #
-ENV KAFKA_VERSION=0.10.2.0 \
-    SCALA_VERSION=2.11 \
+ENV KAFKA_VERSION=0.11.0.0 \
+    SCALA_VERSION=2.12 \
     KAFKA_HOME=/kafka \
-    MD5HASH=051e5e16050c85ebdc40f3bbbc188317
+    MD5HASH=a408f2eea282bcfa8a25ba20eb1ad49b
 
 #
 # Create a user and home directory for Kafka

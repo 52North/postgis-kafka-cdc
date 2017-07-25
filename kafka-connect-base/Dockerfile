@@ -1,4 +1,4 @@
-FROM 52north/kafka:0.10.2.0
+FROM 52north/kafka:0.11.0.0
 
 MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
