@@ -1,5 +1,7 @@
 FROM mdillon/postgis:9.6
 
+MAINTAINER Matthes Rieke <m.rieke@52north.org>
+
 # Install the packages which will be required to get everything to compile
 RUN apt-get update \
     && apt-get install -f -y --no-install-recommends \

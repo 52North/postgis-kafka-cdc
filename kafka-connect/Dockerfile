@@ -1,6 +1,6 @@
 FROM 52north/kafka-connect-base:0.10.2.0
 
-MAINTAINER Debezium Community
+MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
 ENV DEBEZIUM_VERSION=0.5.1 \
     MAVEN_CENTRAL="https://repo1.maven.org/maven2"

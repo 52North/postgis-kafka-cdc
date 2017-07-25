@@ -1,6 +1,6 @@
 FROM 52north/kafka:0.10.2.0
 
-MAINTAINER Debezium Community
+MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
 EXPOSE 8083
 VOLUME ["/kafka/data","/kafka/logs","/kafka/config"]

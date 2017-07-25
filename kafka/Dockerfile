@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-MAINTAINER Debezium Community
+MAINTAINER Matthes Rieke <m.rieke@52north.org>
 
 RUN uname -a
 
