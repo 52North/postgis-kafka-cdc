@@ -40,3 +40,8 @@ It may happen that changes are only available after a delay (1-2 minutes?).
 This may be related to topic creation, as it does not seem to happen if
 a consumer _first_ (i.e. before POSTing the above connector config)
 subscribes to the topic that is later used by debezium to publish changes.
+
+# Acknowledgement
+
+This Docker images have been derived from
+[debezium/docker-images](https://github.com/debezium/docker-images).
