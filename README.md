@@ -11,9 +11,7 @@ Currently, images are not yet pushed to docker hub. Please compile locally (it's
 ```
 cd kafka
 docker-compose build
-cd ../kafka-connect-base
-docker-compose build
-cd ../kafka-connect
+cd ../kafka-connect-debezium
 docker-compose build
 cd ../postgis-debezium
 docker-compose build

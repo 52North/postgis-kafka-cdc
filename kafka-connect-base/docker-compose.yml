@@ -1,6 +1,0 @@
-version: '2'
-#for building purposes only
-services:
-  kafka-connect-base:
-    build: .
-    image: 52north/kafka-connect-base:0.11.0.0
