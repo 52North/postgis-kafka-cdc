@@ -87,6 +87,9 @@ mkdir -p $KAFKA_HOME/data/$KAFKA_BROKER_ID
 # Process the argument to this container ...
 case $1 in
     start)
+        echo "sleeping for a moment to wait for kafka..."
+        sleep 5
+
         if [[ "x$CONNECT_BOOTSTRAP_SERVERS" = "x" ]]; then
             echo "The BOOTSTRAP_SERVERS variable must be set, or the container must be linked to one that runs Kafka."
             exit 1
@@ -136,7 +139,7 @@ case $1 in
         sed -i -r -e "s|=INFO, stdout|=$LOG_LEVEL, stdout|g" $KAFKA_HOME/config/log4j.properties
         sed -i -r -e "s|^(log4j.appender.stdout.threshold)=.*|\1=${LOG_LEVEL}|g" $KAFKA_HOME/config/log4j.properties
         export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:$KAFKA_HOME/config/log4j.properties"
-        
+
         #
         # Process all environment variables that start with 'KAFKA_' (but not 'KAFKA_HOME' or 'KAFKA_VERSION'):
         #
@@ -158,7 +161,7 @@ case $1 in
 
         #
         # Execute the Kafka Connect distributed service, replacing this shell process with the specified program ...
-        #        
+        #
         exec $KAFKA_HOME/bin/connect-distributed.sh $KAFKA_HOME/config/connect-distributed.properties
         ;;
 esac
